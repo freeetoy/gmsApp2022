@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MassActivity">
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -58,7 +59,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tv_mass"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:scrollbarFadeDuration="0"
             android:scrollbarSize="5dp"
@@ -66,19 +67,73 @@
             android:scrollbars="vertical"
             android:stackFromBottom="true"
             android:text="1111" />
+
     </LinearLayout>
     <View style="@style/Divider"/>
+
+    <Button
+        android:id="@+id/btn_massRentBack"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="대여회수"
+        app:layout_constraintBottom_toTopOf="@+id/btn_goBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_massBack" />
+
+    <Button
+        android:id="@+id/btn_goBack"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="메인으로"
+        app:layout_constraintBottom_toTopOf="@+id/btn_buyback"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_massOut" />
+
+    <Button
+        android:id="@+id/btn_massCome"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="대량입고"
+        app:layout_constraintBottom_toTopOf="@+id/btn_mscan"
+        app:layout_constraintEnd_toStartOf="@id/btn_massOut"
+        app:layout_constraintStart_toEndOf="@id/btn_massProduct" />
+
+    <Button
+        android:id="@+id/btn_massBack"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="대량회수"
+        app:layout_constraintBottom_toTopOf="@+id/btn_massOut"
+        app:layout_constraintEnd_toStartOf="@+id/btn_massRentBack"
+        app:layout_constraintStart_toEndOf="@+id/btn_massRent" />
 
     <Button
         android:id="@+id/btn_massSale"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="대량판매"
+        app:layout_constraintBottom_toTopOf="@+id/btn_massProduct"
+        app:layout_constraintEnd_toStartOf="@+id/btn_massRent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_massRent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="대량대여"
+        app:layout_constraintBottom_toTopOf="@+id/btn_massCome"
+        app:layout_constraintEnd_toStartOf="@+id/btn_massBack"
+        app:layout_constraintStart_toEndOf="@+id/btn_massSale" />
+
+    <Button
+        android:id="@+id/btn_massOut"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="대량출고"
         android:textColor="#000"
-        android:textSize="@dimen/button_4_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_back"
-        app:layout_constraintStart_toEndOf="@+id/btn_massProduct" />
+        app:layout_constraintBottom_toTopOf="@+id/btn_mmanual"
+        app:layout_constraintEnd_toStartOf="@+id/btn_goBack"
+        app:layout_constraintStart_toEndOf="@+id/btn_massCome" />
 
     <Button
         android:id="@+id/btn_massProduct"
@@ -87,29 +142,35 @@
         android:text="상품"
         android:textColor="#000"
         android:textSize="@dimen/button_4_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_massSale"
+        app:layout_constraintBottom_toTopOf="@+id/btn_mscan"
+        app:layout_constraintEnd_toStartOf="@+id/btn_massCome"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btn_goBack"
+        android:id="@+id/btn_mscan"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="메인으로"
-        android:textColor="#000"
-        android:textSize="@dimen/button_4_size"
+        android:text="스캔하기"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_back" />
+        app:layout_constraintEnd_toStartOf="@+id/btn_mmanual"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btn_back"
+        android:id="@+id/btn_mmanual"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="대량회수"
-        android:textColor="#000"
-        android:textSize="@dimen/button_4_size"
+        android:text="수동입력"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_goBack"
-        app:layout_constraintStart_toEndOf="@+id/btn_massSale" />
+        app:layout_constraintEnd_toStartOf="@+id/btn_buyback"
+        app:layout_constraintStart_toEndOf="@+id/btn_mscan" />
+
+    <Button
+        android:id="@+id/btn_buyback"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="앱정보"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_mmanual" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,9 +24,14 @@ public class WorkBottleVO {
 	*/
     private String bottleWorkCd;
 
+    /** Product_ID 			*/
+    private Integer productId;
 
     /**Product_Nm */
     private String productNm;
+
+    /** Product_Price_Seq */
+    private Integer productPriceSeq;
 
     /** Product_Capa     */
     private String productCapa;
@@ -35,7 +40,7 @@ public class WorkBottleVO {
 
 
     /** Order_Total_Amount     	*/
-    private int orderTotalAmount;
+    private double orderTotalAmount;
 
     private int productCount;
 
@@ -95,11 +100,11 @@ public class WorkBottleVO {
         this.bottleWorkCdNm = bottleWorkCdNm;
     }
 
-    public int getOrderTotalAmount() {
+    public double getOrderTotalAmount() {
         return orderTotalAmount;
     }
 
-    public void setOrderTotalAmount(int orderTotalAmount) {
+    public void setOrderTotalAmount(double orderTotalAmount) {
         this.orderTotalAmount = orderTotalAmount;
     }
 
@@ -109,5 +114,21 @@ public class WorkBottleVO {
 
     public void setProductCount(int productCount) {
         this.productCount = productCount;
+    }
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
+
+    public Integer getProductPriceSeq() {
+        return productPriceSeq;
+    }
+
+    public void setProductPriceSeq(Integer productPriceSeq) {
+        this.productPriceSeq = productPriceSeq;
     }
 }

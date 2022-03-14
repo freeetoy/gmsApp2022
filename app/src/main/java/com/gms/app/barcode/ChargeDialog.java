@@ -26,6 +26,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -167,7 +168,7 @@ public class ChargeDialog {
                 editor.commit();
                 //Log.d("@@@@@@@@@@@@@okButton: " ,"previousBottles: " + bottles);
                 // 서버 전송
-                new HttpAsyncTask1().execute(host+ context.getString(R.string.api_controlAction) +"userId="+userId+"&bottles="+bottles+"&customerNm="+customerId+"&bottleType="+bottleType+"&bottleWorkCd="+buttonType);
+                new HttpAsyncTask1().execute(host+ context.getString(R.string.api_controlAction) +"userId="+userId+"&bottles="+bottles+"&customerNm="+ URLEncoder.encode(customerId)+"&bottleType="+bottleType+"&bottleWorkCd="+buttonType);
 
                 //MainActivity List 제거
                 MainActivity.clearArrayList();

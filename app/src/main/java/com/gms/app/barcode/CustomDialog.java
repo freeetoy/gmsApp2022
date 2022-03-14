@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -26,6 +27,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -175,7 +177,7 @@ public class CustomDialog {
                         editor.commit();
                         //Log.d("@@@@@@@@@@@@@okButton: ","previousBottles: " + bottles);
                         // 서버 전송
-                        new HttpAsyncTask1().execute(host + context.getString(R.string.api_controlAction) +"userId=" + userId + "&bottles=" + bottles + "&customerNm=" + customerId + "&bottleType=" + bottleType + "&bottleWorkCd=" + buttonType);
+                        new HttpAsyncTask1().execute(host + context.getString(R.string.api_controlAction) +"userId=" + userId + "&bottles=" + bottles + "&customerNm=" + URLEncoder.encode(customerId) + "&bottleType=" + bottleType + "&bottleWorkCd=" + buttonType);
 
                         //MainActivity List 제거
                         MainActivity.clearArrayList();
@@ -291,7 +293,7 @@ public class CustomDialog {
 
         @Override
         protected String doInBackground(String... params) {
-            //List<CustomerSimpleVO> customerList = new ArrayList<>();
+
             String strUrl = params[0];
             String result= "";
             try {
@@ -302,7 +304,7 @@ public class CustomDialog {
                 // 응답
                 Response response = client.newCall(request).execute();
                 result = response.body().string();
-                //Log.d(TAG, "response.body().string(): " + result);
+                Log.d(TAG, "**** response.body().string(): " + result);
                 if(result.equals("fail")){
                     Handler mHandler = new Handler(Looper.getMainLooper());
                     mHandler.postDelayed(new Runnable() {

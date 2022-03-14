@@ -8,8 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -52,6 +50,9 @@ public class ReportActivity extends AppCompatActivity {
         final SharedPreferences sharedPreferences = getSharedPreferences(shared,0);
         userId = sharedPreferences.getString("id", "");
 
+        Intent intent = getIntent();
+        String uid = intent.getStringExtra("uid");
+        if(userId == null || userId.length() <=0 ) userId = uid;
 
         btn_okbtn = (Button)findViewById(R.id.btn_okbtn);       // 기타
 
@@ -74,7 +75,7 @@ public class ReportActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ReportActivity.this, MainActivity.class);
-                // user_id 가져오기 0601 추가
+
                 intent.putExtra("uid",userId);
                 startActivity(intent);
             }
@@ -117,11 +118,11 @@ public class ReportActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<WorkBottleVO> workReportList) {
             super.onPostExecute(workReportList);
-
+            Button btn_info = findViewById(R.id.btn_buyback);
             for (int i = 0; i < workReportList.size(); i++) {
                 WorkBottleVO workBottle = workReportList.get(i);
 
-                ReportData reportData = new ReportData(workBottle.getCustomerNm(),workBottle.getProductNm(), workBottle.getProductCapa(), workBottle.getBottleWorkCdNm(), workBottle.getProductCount());
+                ReportData reportData = new ReportData(workBottle.getCustomerNm(),workBottle.getProductNm(), workBottle.getProductCapa(), workBottle.getBottleWorkCdNm(), workBottle.getProductCount(),btn_info, workBottle.getWorkReportSeq().toString()+";"+workBottle.getProductId()+";"+workBottle.getProductPriceSeq()+";"+workBottle.getBottleWorkCd());
                 //Toast.makeText(MainActivity.this ,"onPostExecute."+arrayList.size()+"--isScan="+isScan, Toast.LENGTH_SHORT).show();
                 arrayList.add(reportData);
                 reportAdapter.notifyDataSetChanged();

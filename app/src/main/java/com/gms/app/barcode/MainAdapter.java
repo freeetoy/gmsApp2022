@@ -3,6 +3,7 @@ package com.gms.app.barcode;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.CustomViewHold
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list,parent,false);
 
         CustomViewHolder holder = new CustomViewHolder(view);
-
         return holder;
     }
 
@@ -43,12 +43,27 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.CustomViewHold
         holder.tv_bottleBarCd.setText(arrayList.get(position).getTv_bottleBarCd());
         holder.tv_chargedt.setText(arrayList.get(position).getTv_chargedt());
 
+        if(arrayList.get(position).getTv_bottleBarCd() !=null && arrayList.get(position).getTv_bottleBarCd().toString().length() > 9 ){
+            holder.tv_bottleBarCd.setTextSize(15);
+        }
+        if(arrayList.get(position).getTv_productNm() !=null &&  arrayList.get(position).getTv_productNm().toString().length() > 9 ){
+            holder.tv_productNm.setTextSize(15);
+        }
+        if(arrayList.get(position).getTv_chargedt() !=null &&  arrayList.get(position).getTv_chargedt().toString().length() > 5 ){
+            holder.tv_chargedt.setTextSize(15);
+        }
+        if(arrayList.get(position).getTv_chargedt() !=null && arrayList.get(position).getTv_chargedt().indexOf("-") > -1){
+            holder.tv_bottleId.setTextColor(Color.parseColor("#E53935"));
+            holder.tv_productNm.setTextColor(Color.parseColor("#E53935"));
+            holder.tv_bottleBarCd.setTextColor(Color.parseColor("#E53935"));
+            holder.tv_chargedt.setTextColor(Color.parseColor("#E53935"));
+        }
+
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String curNmae = holder.tv_productNm.getText().toString();
-
             }
         });
 
@@ -143,7 +158,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.CustomViewHold
             this.tv_productNm = (TextView) itemView.findViewById(R.id.tv_productNm);
             this.tv_bottleBarCd = (TextView) itemView.findViewById(R.id.tv_bottleBarCd);
             this.tv_chargedt = (TextView) itemView.findViewById(R.id.tv_chargedt);
-            this.btn_info = (Button)itemView.findViewById(R.id.btn_info);
+            this.btn_info = (Button)itemView.findViewById(R.id.btn_buyback);
         }
     }
 }

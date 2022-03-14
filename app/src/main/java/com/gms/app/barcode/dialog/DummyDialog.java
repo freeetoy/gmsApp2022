@@ -67,7 +67,6 @@ public class DummyDialog {
         host = context.getString(R.string.host_name);
 
         new HttpAsyncTask2().execute(host + context.getString(R.string.api_getDummyBottle));
-        //new HttpAsyncTask().execute("http://172.30.57.228:8080/api/carList.do");
     }
 
     // 호출할 다이얼로그 함수를 정의한다.
@@ -143,6 +142,24 @@ public class DummyDialog {
                     SimpleBottleVO sBottle = productList.get(i);
                     if(productNm.equals(sBottle.getProductNm()) && prdouctCapa.equals(sBottle.getBottleCapa())){
                         str_BarCd = sBottle.getBottleBarCd();
+                    }
+                }
+
+                ArrayList<String > tempList = new ArrayList<>();
+                for(int j=4; j > 0 ; j--){
+                    tempList.add(str_BarCd+"_"+j);
+                }
+                for (int i = 0; i < arrayList.size(); i++) {
+                    Log.d("arrayList.get(i).getTv_bottleBarCd()",arrayList.get(i).getTv_bottleBarCd());
+                    if (arrayList.get(i).getTv_bottleBarCd().equals(str_BarCd)){
+                        for(int j=tempList.size()-1; j > -1 ; j--){
+                            if (arrayList.get(i).getTv_bottleBarCd().equals(tempList.get(j))){
+                                tempList.remove(j);
+                            }
+                        }
+                        if(tempList.size() > 0){
+                            str_BarCd = tempList.get(tempList.size()-1);
+                        }
                     }
                 }
                 //MainActivity List 등록

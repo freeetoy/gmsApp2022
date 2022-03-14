@@ -20,7 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ReportActivity"></activity>
+        <activity android:name=".OrderActivity"></activity>
+        <activity android:name=".OrderListActivity" />
+        <activity android:name=".ReportActivity" />
         <activity android:name=".MassActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>

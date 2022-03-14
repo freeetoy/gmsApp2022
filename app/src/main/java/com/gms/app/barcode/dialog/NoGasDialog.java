@@ -3,6 +3,7 @@ package com.gms.app.barcode.dialog;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -30,6 +31,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -53,6 +55,7 @@ public class NoGasDialog {
     private String shared = "file";
     boolean isUpdate = true;
     private Spinner spinner;
+    private EditText productSeq;
     List<ProductPriceSimpleVO> productList = new ArrayList<>();
     static EditText productCount;
     String productType = "";
@@ -61,6 +64,12 @@ public class NoGasDialog {
     String userId = "";
     String host ="";
     String value ="" ;
+    String strAction = "";
+    String strProductType = "";
+
+    Integer productId = 0;
+    Integer productPriceSeq = 0;
+    int iProductCount = 0 ;
 
     public NoGasDialog(Context context, String bType) {
         this.context = context;
@@ -74,7 +83,10 @@ public class NoGasDialog {
         if(value ==null || value.length() <= 10)
             new HttpAsyncTask().execute(host + context.getString(R.string.api_customerList));
 
-        new HttpAsyncTask2().execute(host + context.getString(R.string.api_ngasProduct));
+        if(buttonType.equals("LN2"))
+            new HttpAsyncTask2().execute(host + context.getString(R.string.api_ln2LProductPriceList));
+        else
+            new HttpAsyncTask2().execute(host + context.getString(R.string.api_ngasProduct));
         //new HttpAsyncTask().execute("http://172.30.57.228:8080/api/carList.do");
     }
 
@@ -90,7 +102,10 @@ public class NoGasDialog {
         dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         // 커스텀 다이얼로그의 레이아웃을 설정한다.
-        dlg.setContentView(R.layout.nogas_dialog);
+        if(buttonType.equals("LN2")) {
+            dlg.setContentView(R.layout.ln2_dialog);
+        }else
+            dlg.setContentView(R.layout.nogas_dialog);
 
         // 커스텀 다이얼로그를 노출한다.
         dlg.show();
@@ -101,7 +116,9 @@ public class NoGasDialog {
         final Button okButton = (Button) dlg.findViewById(R.id.okButton);
         final Button cancelButton = (Button) dlg.findViewById(R.id.cancelButton);
         productCount = (EditText) dlg.findViewById(R.id.productCount);
-
+        if(buttonType.equals("LN2")) {
+            productSeq = (EditText) dlg.findViewById(R.id.productSeq);
+        }
         title.setText(buttonType);
         // Add Data to listView
         listView = (ListView) dlg.findViewById(R.id.listview);
@@ -127,9 +144,13 @@ public class NoGasDialog {
 
         if(buttonType.equals("LN2")) {
             spinner.setVisibility(View.INVISIBLE);
-            productCount.setVisibility(View.VISIBLE);
-            productCount.setHint("L");
+            productSeq.setHint("L(용량)");
+            productCount.setText("1");
+        }else{
+            //productSeq.setVisibility(View.INVISIBLE);
+            productCount.setText("1");
         }
+
         message.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -176,28 +197,30 @@ public class NoGasDialog {
                     Toast.makeText(context, "거래처를 선택하세요", Toast.LENGTH_SHORT).show();
                 }else {
                     customerId = message.getText().toString();
-                    Integer productId = 0;
-                    Integer productPriceSeq = 0;
-                    int iProductCount = 0 ;
+
                     if(productCount.getText().toString().equals("") || productCount.getText().toString() == null ){
                         Toast.makeText(context, "수량을 입력하세요", Toast.LENGTH_SHORT).show();
                     }else {
                         boolean isGo = false;
                         if(buttonType.equals("LN2")) {
-                            productId = Integer.parseInt(context.getString(R.string.LN2_ProductID));
-                            for (int i = 0; i < productList.size(); i++) {
-                                if (productCount.getText().toString().equals(productList.get(i).getProductCapa()) ){
-                                    productPriceSeq = productList.get(i).getProductPriceSeq();
-                                    isGo = true;
-                                    break;
+                            if(productSeq.getText().toString().equals("") || productSeq.getText().toString() == null ){
+                                Toast.makeText(context, "L(용량)를 입력하세요", Toast.LENGTH_SHORT).show();
+                            }else {
+                                productId = Integer.parseInt(context.getString(R.string.LN2_ProductID));
+                                for (int i = 0; i < productList.size(); i++) {
+                                    if (productSeq.getText().toString().equals(productList.get(i).getProductCapa())) {
+                                        //productPriceSeq = productList.get(i).getProductPriceSeq();
+                                        isGo = true;
+                                        break;
+                                    }
                                 }
                             }
-                            iProductCount = 1;
-
+                            productPriceSeq = Integer.parseInt(productSeq.getText().toString());
                         }else {
-                            iProductCount = Integer.parseInt(productCount.getText().toString());
                             isGo = true;
                         }
+                        iProductCount = Integer.parseInt(productCount.getText().toString());
+
                         if(!buttonType.equals("LN2")) {
                             for (int i = 0; i < productList.size(); i++) {
                                 if (productType.equals(productList.get(i).getProductNm())) {
@@ -209,20 +232,39 @@ public class NoGasDialog {
                         }
 
                         if(isGo) {
-                            String strAction = buttonType;
-                            String strProductType = productType;
+                            strAction = buttonType;
+                            strProductType = productType;
                             if(buttonType.equals("LN2"))  {
                                 strAction = " 판매";
-                                strProductType = buttonType + "_" +productCount.getText().toString();
+                                strProductType = buttonType + "_" + productSeq.getText().toString();
                             }
 
-                            Toast.makeText(context, String.format("\"%s에 %s를 %s\"하였습니다.", message.getText().toString(), strProductType, strAction), Toast.LENGTH_SHORT).show();
-                            // 서버 전송
-                            new HttpAsyncTask1().execute(host + context.getString(R.string.api_controlActionNoGas) + "userId=" + userId + "&customerNm=" + customerId + "&productId=" + productId + "&productPriceSeq=" + productPriceSeq + "&productCount=" + iProductCount);
-                            //MainActivity List 제거
-                            MainActivity.clearArrayList();
-                            // 커스텀 다이얼로그를 종료한다.
-                            dlg.dismiss();
+                            AlertDialog.Builder ad = new AlertDialog.Builder(context);
+                            ad.setMessage(String.format("\"%s에 %s를 %s\"하겠습니까?", message.getText().toString(), strProductType, strAction));
+
+                            ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    Toast.makeText(context, String.format("\"%s에 %s를 %s\"하였습니다.", message.getText().toString(), strProductType, strAction), Toast.LENGTH_SHORT).show();
+                                    // 서버 전송
+                                    new HttpAsyncTask1().execute(host + context.getString(R.string.api_controlActionNoGas) + "userId=" + userId + "&customerNm=" + URLEncoder.encode(customerId ) + "&productId=" + productId + "&productPriceSeq=" + productPriceSeq + "&productCount=" + iProductCount);
+                                    //MainActivity List 제거
+                                    MainActivity.clearArrayList();
+                                    // 커스텀 다이얼로그를 종료한다.
+                                    dlg.dismiss();
+                                }
+                            });
+
+                            ad.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            ad.show();
+
+
                         }else{
                             // 상품이 존재하지 않음
                             AlertDialog.Builder builder1

@@ -1,5 +1,7 @@
 package com.gms.app.barcode.adapter;
 
+import android.widget.Button;
+
 public class ReportData {
 
     private String tv_reportCustomerNm;
@@ -7,6 +9,18 @@ public class ReportData {
     private String tv_reportProductCapa;
     private String tv_reportBottleWork;
     private int tv_reportProductCount;
+    private Button btn_info;
+    private String tv_workReportSeq;
+
+    public ReportData(String tv_reportCustomerNm, String tv_reportProductNm, String tv_reportProductCapa, String tv_reportBottleWork, int tv_reportProductCount, Button btn_info, String tv_workReportSeq) {
+        this.tv_reportCustomerNm = tv_reportCustomerNm;
+        this.tv_reportProductNm = tv_reportProductNm;
+        this.tv_reportProductCapa = tv_reportProductCapa;
+        this.tv_reportBottleWork = tv_reportBottleWork;
+        this.tv_reportProductCount = tv_reportProductCount;
+        this.btn_info = btn_info;
+        this.tv_workReportSeq = tv_workReportSeq;
+    }
 
     public ReportData(String tv_reportCustomerNm, String tv_reportProductNm, String tv_reportProductCapa, String tv_reportBottleWork, int tv_reportProductCount) {
         this.tv_reportCustomerNm = tv_reportCustomerNm;
@@ -54,5 +68,21 @@ public class ReportData {
 
     public void setTv_reportProductCount(int tv_reportProductCount) {
         this.tv_reportProductCount = tv_reportProductCount;
+    }
+
+    public Button getBtn_info() {
+        return btn_info;
+    }
+
+    public void setBtn_info(Button btn_info) {
+        this.btn_info = btn_info;
+    }
+
+    public String getTv_workReportSeq() {
+        return tv_workReportSeq;
+    }
+
+    public void setTv_workReportSeq(String tv_workReportSeq) {
+        this.tv_workReportSeq = tv_workReportSeq;
     }
 }

@@ -28,6 +28,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,8 +61,8 @@ public class CashDialog {
     String userId = "";
     String host ="";
     String value ="" ;
-    int receivableAmount = 0;
-    int incomeAmount = 0;
+    Double receivableAmount = 0.0;
+    Double incomeAmount = 0.0;
     String strAction="";
     TextView tv_receivableAllAmount;
 
@@ -133,7 +134,7 @@ public class CashDialog {
                 String text = (String)parent.getAdapter().getItem(position);
                 message.setText(text);
                 // 서버 전송
-                new HttpAsyncTaskB().execute(host + context.getString(R.string.api_customerBottle) +"customerNm=" + text );
+                new HttpAsyncTaskB().execute(host + context.getString(R.string.api_customerBottle) +"customerNm=" + URLEncoder.encode(text) );
             }
         });
 
@@ -191,11 +192,11 @@ public class CashDialog {
                         Toast.makeText(context, "수금액과 입금액을 입력하세요", Toast.LENGTH_SHORT).show();
                     }else{
                         if(et_receivable.getText().toString().length() >0){
-                            receivableAmount = Integer.parseInt(et_receivable.getText().toString());
+                            receivableAmount = Double.parseDouble(et_receivable.getText().toString());
                             strAction = "미수금";
                         }
                         if(et_income.getText().toString().length() > 0) {
-                            incomeAmount = Integer.parseInt(et_income.getText().toString());
+                            incomeAmount = Double.parseDouble(et_income.getText().toString());
                             if(strAction.equals("미수금")) strAction = "미수금 & 입금";
                             else strAction ="& 입금";
                             if (incomeWay.length() <= 0) {
@@ -208,7 +209,7 @@ public class CashDialog {
                             customerId = message.getText().toString();
 
                             // 서버 전송
-                            new HttpAsyncTask1().execute(host + context.getString(R.string.api_controlCashFlow) +"userId=" + userId + "&customerNm=" + customerId + "&incomeAmount=" + incomeAmount + "&receivableAmount=" + receivableAmount + "&incomeWay=" + incomeWay);
+                            new HttpAsyncTask1().execute(host + context.getString(R.string.api_controlCashFlow) +"createId=" + userId + "&customerNm=" + URLEncoder.encode(customerId) + "&incomeAmount=" + incomeAmount + "&receivableAmount=" + receivableAmount + "&incomeWay=" + incomeWay);
 
                             // 커스텀 다이얼로그를 종료한다.
                             dlg.dismiss();
@@ -400,21 +401,22 @@ public class CashDialog {
         protected void onPostExecute(List<SimpleBottleVO> bottleList) {
             super.onPostExecute(bottleList);
 
-            int receivableAmount = 0;
-            bottleItems = new String[bottleList.size()];
-            for (int i = 0; i < bottleList.size(); i++) {
-                bottleItems[i] = bottleList.get(i).getBottleBarCd()+" "+bottleList.get(i).getProductNm()+", "+bottleList.get(i).getBottleCapa()+"";
-                receivableAmount = bottleList.get(i).getReceivableAmount();
+            double receivableAmount = 0;
+            DecimalFormat df = new DecimalFormat("##,###.##"); //format설정
+
+            if(bottleList !=null && bottleList.size() > 0) {
+                bottleItems = new String[bottleList.size()];
+                for (int i = 0; i < bottleList.size(); i++) {
+                    bottleItems[i] = bottleList.get(i).getBottleBarCd() + " " + bottleList.get(i).getProductNm() + ", " + bottleList.get(i).getBottleCapa() + "";
+                    receivableAmount = bottleList.get(i).getReceivableAmount();
+                }
+                df.format(receivableAmount);
+                tv_receivableAllAmount.setText(df.format( receivableAmount ));
+
+                bottleArray = new ArrayList<>(Arrays.asList(bottleItems));
+                adapterB = new ArrayAdapter(context, R.layout.item_customer, R.id.tv_customer, bottleArray);
+                lv_bottle.setAdapter(adapterB);
             }
-            DecimalFormat df = new DecimalFormat( "##,###.##" ); //format설정
-
-            df.format( receivableAmount );
-
-            tv_receivableAllAmount.setText(df.format( receivableAmount ));
-            bottleArray = new ArrayList<>(Arrays.asList(bottleItems));
-            adapterB = new ArrayAdapter(context, R.layout.item_customer, R.id.tv_customer, bottleArray);
-            lv_bottle.setAdapter(adapterB);
-
         }
     }
 }

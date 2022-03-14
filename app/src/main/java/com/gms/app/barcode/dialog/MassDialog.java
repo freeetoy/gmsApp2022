@@ -92,7 +92,7 @@ public class MassDialog {
         final Button cancelButton = (Button) dlg.findViewById(R.id.cancelButton);
         final EditText et_productCount = (EditText) dlg.findViewById(R.id.et_productCount);
 
-        title.setText(buttonType);
+        title.setText("대량상품");
         // Add Data to listView
 
         spinner = (Spinner)dlg.findViewById(R.id.spinner);

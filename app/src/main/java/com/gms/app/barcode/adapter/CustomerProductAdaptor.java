@@ -26,7 +26,7 @@ public class CustomerProductAdaptor extends ArrayAdapter {
 
         this.itemList = itemList;
         this.context = context;
-        Log.d("CustomerProductAdaptor", "CustomerProductAdaptor: " + itemList.size());
+        //Log.d("CustomerProductAdaptor", "CustomerProductAdaptor: " + itemList.size());
         // list_row.xml의 id. getView 메쏘드에서 추가될 item의 position에 해당 view를 inflate하기 위해 저장
         this.rowResourceId = textViewResourceId;
     }

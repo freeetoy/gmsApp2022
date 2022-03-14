@@ -25,7 +25,7 @@ public class SimpleBottleVO implements Serializable {
     private Integer productPriceSeq;
 
     /** Receivable_Amount	*/
-    private int receivableAmount;
+    private float receivableAmount;
 
     public void setBottleId(String bottleId) {
         this.bottleId = bottleId;
@@ -43,7 +43,7 @@ public class SimpleBottleVO implements Serializable {
         this.bottleCapa = bottleCapa;
     }
 
-    public void setReceivableAmount(int receivableAmount) {
+    public void setReceivableAmount(float receivableAmount) {
         this.receivableAmount = receivableAmount;
     }
 
@@ -63,7 +63,7 @@ public class SimpleBottleVO implements Serializable {
         return bottleCapa;
     }
 
-    public int getReceivableAmount() {
+    public float getReceivableAmount() {
         return receivableAmount;
     }
 

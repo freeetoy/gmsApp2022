@@ -101,15 +101,19 @@ public class LoginActivity extends AppCompatActivity {
                 String pw = et_pass.getText().toString();
                 //Toast.makeText(getApplicationContext(),"아이디  "+id+"로 로그인 버튼을 클릭 하였습니다.",Toast.LENGTH_LONG).show();
 
-                String encodedId = encode(id);
-                String encodedPw = encode(pw);
-                String url = getString(R.string.host_name)+getString(R.string.api_login)+"id="+encodedId+"&pw="+encodedPw;//AA315923";
-                //String url = getString(R.string.host_name)+"/api/loginEncodeAction.do?id="+encodeId+"&pw="+pw;//AA315923";
-                // AsyncTask를 통해 HttpURLConnection 수행.
-                NetworkTask networkTask = new NetworkTask(url, null);
-                networkTask.execute();
-                //data를 json으로 변환
-                //JSONObject obj = new JSONObject(result.getContents());
+                if(id != null && id.length() > 0 && pw !=null && pw.length() > 0) {
+                    String encodedId = encode(id);
+                    String encodedPw = encode(pw);
+                    String url = getString(R.string.host_name) + getString(R.string.api_login) + "id=" + encodedId + "&pw=" + encodedPw;//AA315923";
+                    //String url = getString(R.string.host_name)+"/api/loginEncodeAction.do?id="+encodeId+"&pw="+pw;//AA315923";
+                    // AsyncTask를 통해 HttpURLConnection 수행.
+                    NetworkTask networkTask = new NetworkTask(url, null);
+                    networkTask.execute();
+                    //data를 json으로 변환
+                    //JSONObject obj = new JSONObject(result.getContents());
+                }else{
+                    Toast.makeText(getApplicationContext(),"아이디와 비밀번호를 확인해주세요.",Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
